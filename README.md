@@ -81,6 +81,8 @@ setListAdapter(adapter);
 
 
 ![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E8%8F%9C%E5%8D%95.png)
+
 
 
 \2. 笔记搜索功能
@@ -309,6 +311,9 @@ for (int i = 0; i < listView.getChildCount(); i++) {
 }
 
 }
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E5%A4%9C.png)
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%98%BC.png)
+
 
 \4. 笔记反向排序功能
 
