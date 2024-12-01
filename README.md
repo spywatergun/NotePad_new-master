@@ -210,6 +210,12 @@ if (currentCursor != null && currentCursor.getCount() > 0) {
 }
 
 }
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A21.png)
+
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A22.png)
+
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A2%E5%A4%B1%E8%B4%A5.png)
+
 
 \3. 昼夜模式切换功能
 
@@ -368,5 +374,7 @@ adapter.changeCursor(currentCursor);
 isSortedDescending = !isSortedDescending;
 
 }
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%8E%92%E5%BA%8F.png)
+
 
 这些功能将使便签应用更加实用和便捷。通过为每条笔记添加时间戳，用户可以了解笔记的最后修改时间；通过搜索功能，用户可以快速找到想要的笔记；昼夜模式切换可以让用户在不同的光线条件下舒适使用应用；反向排序功能则提供了一种便捷的笔记查看方式，让用户可以按照修改时间轻松查看最新笔记。
