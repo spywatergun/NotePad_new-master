@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_reverse_sort"
+        android:title="逆序"
+        android:showAsAction="never"/>
+    <!-- 粘贴菜单项 -->
+    <item android:id="@+id/menu_paste"
+        android:icon="@drawable/ic_menu_compose"
+        android:title="粘贴"
+        android:alphabeticShortcut='p' />
+
+    <!-- 搜索菜单项 -->
+    <item android:id="@+id/menu_search"
+        android:icon="@drawable/search"
+        android:title="@string/menu_search"
+        android:showAsAction="ifRoom" />
+
+
+    <item android:id="@+id/menu_toggle_theme"
+        android:icon="@drawable/ic_night_mode"
+        android:title="昼/夜模式"
+        android:showAsAction="ifRoom" />
+</menu>

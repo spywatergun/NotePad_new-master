@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- Declare the contents of this Android application.  The namespace
+     attribute brings in the Android platform namespace, and the package
+     supplies a unique name for the application.  When writing your
+     own application, the package name must be changed from "com.example.*"
+     to come from a domain that you own or have control over. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.android.notepad">
+
+    <application
+        android:icon="@drawable/app_notes"
+        android:label="@string/app_name">
+
+        <!-- Content provider for the note pad -->
+        <provider
+            android:name="NotePadProvider"
+            android:authorities="com.google.provider.NotePad"
+            android:exported="false">
+            <grant-uri-permission android:pathPattern=".*" />
+        </provider>
+
+        <!-- Main activity: Notes List -->
+        <activity android:name="NotesList"
+            android:label="@string/title_notes_list">
+
+            <!-- Intent filter for main activity (launching the app) -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Intent filters for viewing/editing/choosing notes -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.google.note" />
+            </intent-filter>
+
+            <!-- Intent filter for getting content (note) -->
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.google.note" />
+            </intent-filter>
+        </activity>
+
+        <!-- Activity to edit the note -->
+        <activity
+            android:name="NoteEditor"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation">
+
+            <!-- Intent filters for editing the note -->
+            <intent-filter android:label="@string/resolve_edit">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="com.android.notepad.action.EDIT_NOTE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.google.note" />
+            </intent-filter>
+
+            <!-- Intent filters for inserting or pasting a note -->
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <action android:name="android.intent.action.PASTE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.google.note" />
+            </intent-filter>
+        </activity>
+
+        <!-- Activity to edit the title of the note -->
+        <activity
+            android:name="TitleEditor"
+            android:label="@string/title_edit_title"
+            android:icon="@drawable/ic_menu_edit"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            android:windowSoftInputMode="stateVisible">
+
+            <!-- Intent filters for editing the title of a note -->
+            <intent-filter android:label="@string/resolve_title">
+                <action android:name="com.android.notepad.action.EDIT_TITLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.ALTERNATIVE" />
+                <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.google.note" />
+            </intent-filter>
+        </activity>
+
+        <!-- Activity for the live folder feature -->
+        <activity
+            android:name="NotesLiveFolder"
+            android:label="@string/live_folder_name"
+            android:icon="@drawable/live_folder_notes">
+
+            <!-- Intent filter for creating a live folder -->
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_LIVE_FOLDER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+
