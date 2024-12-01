@@ -12,7 +12,6 @@ NotePad 是一款简单的 Android 便签应用，提供了笔记的增、删、
 
 笔记反向排序功能
 
-图片请在readme文件夹里查看！！！！！！！！！！！！！
 
 \1. 为每条笔记添加时间戳
 
@@ -79,6 +78,10 @@ SimpleCursorAdapter adapter = new SimpleCursorAdapter(
 );
 
 setListAdapter(adapter);
+
+
+![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
+
 
 \2. 笔记搜索功能
 
