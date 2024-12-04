@@ -30,6 +30,9 @@ NotePad 是一款简单易用的 Android 便签应用，具备以下主要功能
 
 **记录时间戳**
 
+
+
+```
 ContentValues values = new ContentValues();
 
 values.put(NotePad.Notes.COLUMN_NAME_TITLE, title);
@@ -40,9 +43,16 @@ values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis
 
 getContentResolver().insert(NotePad.Notes.CONTENT_URI, values);
 
-**显示时间戳**
+
 ```
 
+
+
+**显示时间戳**
+
+
+
+```
 String[] dataColumns = {
 
   NotePad.Notes.COLUMN_NAME_TITLE,
@@ -68,6 +78,9 @@ SimpleCursorAdapter adapter = new SimpleCursorAdapter(
 );
 
 setListAdapter(adapter);
+```
+
+
 
 **实现图**
 
@@ -91,6 +104,7 @@ setListAdapter(adapter);
 
 **搜索对话框**
 
+```
 private void startSearchActivity() {
 
   AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -114,9 +128,11 @@ private void startSearchActivity() {
   builder.show();
 
 }
+```
 
 **执行查询**
 
+```
 private void performSearch() {
 
   String selection = NotePad.Notes.COLUMN_NAME_TITLE + " LIKE ?";
@@ -148,6 +164,7 @@ private void performSearch() {
   }
 
 }
+```
 
 **实现图**
 
@@ -177,6 +194,7 @@ private void performSearch() {
 
 **悬浮加号按钮**
 
+```
 <com.google.android.material.floatingactionbutton.FloatingActionButton
 
   android:id="@+id/fab"
@@ -202,9 +220,11 @@ fab.setOnClickListener(view -> {
   startActivity(intent);
 
 });
+```
 
 **昼夜模式切换**
 
+```
 private void toggleNightMode() {
 
   SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
@@ -246,6 +266,7 @@ private void setNightMode() {
   findViewById(android.R.id.content).setBackgroundColor(Color.BLACK);
 
 }
+```
 
 **实现图**
 
@@ -267,6 +288,7 @@ private void setNightMode() {
 
 **关键代码**
 
+```
 private boolean isSortedDescending = false;
 
  
@@ -300,6 +322,7 @@ private void toggleSortOrder() {
   isSortedDescending = !isSortedDescending;
 
 }
+```
 
 **实现图**
 
