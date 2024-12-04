@@ -1,34 +1,34 @@
-NotePad 应用功能文档
-功能
-简介
+# NotePad  应用功能文档
 
-NotePad 是一款简单的 Android 便签应用，提供了笔记的增、删、改、查等基本功能。以下是我为应用添加的四个功能
+**功能**
 
-为每条笔记添加时间戳
+NotePad 是一款简单易用的 Android 便签应用，具备以下主要功能：
 
-笔记搜索功能
+1. 添加时间戳
 
-昼夜模式切换功能
+2. 笔记搜索功能
 
-笔记反向排序功能
+3. UI 美化
 
+4. - 新建笔记按钮改为右下角加号按钮
+   - 昼夜模式切换
 
-\1. 为每条笔记添加时间戳
+5. 笔记反向排序功能
 
-功能描述：
+**1. 添加时间戳**
 
-每条笔记都将在创建或修改时自动记录时间戳，便于用户查看最后修改时间。
+**功能**
 
-实现方法：
+每条笔记在创建或修改时自动记录时间戳，方便用户查看最后修改时间。
 
-在保存笔记时，自动为每个笔记记录当前的时间戳。这个时间戳将会存储在数据库中的 COLUMN_NAME_MODIFICATION_DATE 字段。
+**分析**
 
-代码实现：
+1. 在保存笔记时，通过 System.currentTimeMillis() 获取当前时间戳并存储到数据库的 COLUMN_NAME_MODIFICATION_DATE 字段中。
+2. 在笔记列表中，利用 SimpleCursorAdapter 将时间戳字段绑定到显示控件上，显示在列表中。
 
-在创建或更新笔记时，自动插入当前时间戳：
+**关键代码**
 
-
-// 在保存笔记时更新时间戳
+**记录时间戳**
 
 ContentValues values = new ContentValues();
 
@@ -36,345 +36,272 @@ values.put(NotePad.Notes.COLUMN_NAME_TITLE, title);
 
 values.put(NotePad.Notes.COLUMN_NAME_CONTENT, content);
 
-values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis()); // 使用当前时间戳
-
-// 插入或更新笔记
+values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis());
 
 getContentResolver().insert(NotePad.Notes.CONTENT_URI, values);
 
-在笔记列表中显示时间戳：
-
-
-// 定义数据列和视图ID
+**显示时间戳**
 
 String[] dataColumns = {
 
-NotePad.Notes.COLUMN_NAME_TITLE,
+  NotePad.Notes.COLUMN_NAME_TITLE,
 
-NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE
-
-};
-
-int[] viewIDs = {
-
-android.R.id.text1,
-
-R.id.time // 时间戳显示控件
+  NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE
 
 };
+
+int[] viewIDs = {android.R.id.text1, R.id.time};
 
 SimpleCursorAdapter adapter = new SimpleCursorAdapter(
 
-​ this,
+  this,
 
-​ R.layout.noteslist_item,
+  R.layout.noteslist_item,
 
-​ currentCursor,
+  currentCursor,
 
-​ dataColumns,
+  dataColumns,
 
-​ viewIDs
+  viewIDs
 
 );
 
 setListAdapter(adapter);
 
+**实现图**
 
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E8%8F%9C%E5%8D%95.png)
-
-
-
-\2. 笔记搜索功能
-
-功能描述：
-
-用户可以根据标题内容对笔记进行搜索，支持模糊匹配查询。
-
-实现方法：
-
-提供一个 AlertDialog 弹框，让用户输入搜索关键词，通过查询数据库中的笔记标题进行模糊匹配。
-
-代码实现：
-
-启动搜索活动，显示输入框：
+- 列表界面显示标题和时间戳字段，方便用户查看修改时间。
 
 
 
-// 启动搜索活动
+**2. 笔记搜索功能**
+
+**功能**
+
+用户可通过输入关键词，对笔记的标题进行模糊匹配搜索，快速找到所需笔记。
+
+**分析**
+
+1. 使用 AlertDialog 提供搜索输入框，用户输入后提取关键词。
+2. 数据库查询中使用 LIKE 关键字进行模糊匹配。
+3. 更新查询结果到列表，若无匹配项，则提示用户。
+
+**关键代码**
+
+**搜索对话框**
 
 private void startSearchActivity() {
 
-AlertDialog.Builder builder = new AlertDialog.Builder(this);
+  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-builder.setTitle("请输入查找内容:");
+  builder.setTitle("请输入查找内容:");
 
-final EditText input = new EditText(this);
+  final EditText input = new EditText(this);
 
-builder.setView(input);
+  builder.setView(input);
 
-builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+  builder.setPositiveButton("确定", (dialog, which) -> {
 
-​ @Override
+​    searchQuery = input.getText().toString();
 
-​ public void onClick(DialogInterface dialog, int which) {
+​    performSearch();
 
-​ searchQuery = input.getText().toString(); // 获取查询内容
+  });
 
-​ performSearch();
+  builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
 
-​ }
-
-});
-
-builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-​ @Override
-
-​ public void onClick(DialogInterface dialog, int which) {
-
-​ dialog.dismiss();
-
-​ }
-
-});
-
-builder.show();
+  builder.show();
 
 }
 
-// 执行搜索
+**执行查询**
 
 private void performSearch() {
 
-if (TextUtils.isEmpty(searchQuery)) {
+  String selection = NotePad.Notes.COLUMN_NAME_TITLE + " LIKE ?";
 
-​ // 如果搜索词为空，显示所有笔记
+  String[] selectionArgs = new String[]{"%" + searchQuery + "%"};
 
-​ currentCursor = getContentResolver().query(
+  currentCursor = getContentResolver().query(
 
-​ getIntent().getData(),
+​    getIntent().getData(),
 
-​ PROJECTION,
+​    PROJECTION,
 
-​ null, // 不需要过滤条件
+​    selection,
 
-​ null,
+​    selectionArgs,
 
-​ NotePad.Notes.DEFAULT_SORT_ORDER
+​    NotePad.Notes.DEFAULT_SORT_ORDER
 
-​ );
+  );
 
-} else {
+  SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
 
-​ // 执行标题模糊搜索
+  adapter.changeCursor(currentCursor);
 
-​ String selection = NotePad.Notes.COLUMN_NAME_TITLE + " LIKE ?";
+  if (currentCursor == null || currentCursor.getCount() == 0) {
 
-​ String[] selectionArgs = new String[]{"%" + searchQuery + "%"};
+​    Toast.makeText(this, "未找到符合条件的笔记", Toast.LENGTH_SHORT).show();
 
-​ currentCursor = getContentResolver().query(
-
-​ getIntent().getData(),
-
-​ PROJECTION,
-
-​ selection,
-
-​ selectionArgs,
-
-​ NotePad.Notes.DEFAULT_SORT_ORDER
-
-​ );
+  }
 
 }
 
-// 更新数据源，刷新列表
+**实现图**
 
-if (currentCursor != null && currentCursor.getCount() > 0) {
-
-​ SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-
-​ adapter.changeCursor(currentCursor);
-
-} else {
-
-​ currentCursor = null;
-
-​ SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-
-​ adapter.changeCursor(currentCursor); // 更新为空的数据源
-
-​ Toast.makeText(this, "未找到符合条件的笔记", Toast.LENGTH_SHORT).show(); // 提示未找到结果
-
-}
-
-}
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A21.png)
-
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A22.png)
-
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A2%E5%A4%B1%E8%B4%A5.png)
+- 搜索弹框及搜索后列表的展示界面。
 
 
-\3. 昼夜模式切换功能
 
-功能描述：
+**3. UI 美化**
 
-用户可以通过一个按钮切换应用的主题，从白天模式切换到夜间模式（或反之），以适应不同的环境。
+**功能**
 
-实现方法：
+1. 将新建笔记按钮更改为右下角悬浮加号按钮，符合 Material Design。
+2. 昼夜模式切换，通过按钮切换背景和文字颜色，适应不同光线条件。
 
-使用 SharedPreferences 来存储用户的主题偏好，并根据这个偏好切换应用界面的背景色和文字颜色。
+**分析**
 
-代码实现：
+**(1) 悬浮加号按钮**
 
-切换昼夜模式：
+- 使用 FloatingActionButton 组件，样式及点击事件跳转至新建笔记界面。
 
+**(2) 昼夜模式切换**
 
-// 切换昼夜模式
+1. 使用 SharedPreferences 存储主题设置。
+2. 昼夜模式切换时动态修改界面背景和文字颜色。
+
+**关键代码**
+
+**悬浮加号按钮**
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+
+  android:id="@+id/fab"
+
+  android:layout_width="wrap_content"
+
+  android:layout_height="wrap_content"
+
+  android:layout_gravity="bottom|end"
+
+  android:layout_margin="16dp"
+
+  app:srcCompat="@drawable/ic_add"
+
+  android:contentDescription="新建笔记" />
+
+FloatingActionButton fab = findViewById(R.id.fab);
+
+fab.setOnClickListener(view -> {
+
+  Intent intent = new Intent(this, NewNoteActivity.class);
+
+  startActivity(intent);
+
+});
+
+**昼夜模式切换**
 
 private void toggleNightMode() {
 
-SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+  SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-SharedPreferences.Editor editor = sharedPreferences.edit();
+  SharedPreferences.Editor editor = sharedPreferences.edit();
 
-boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
+  boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
 
-if (isNightMode) {
+  if (isNightMode) {
 
-​ editor.putBoolean("NightMode", false);
+​    editor.putBoolean("NightMode", false);
 
-​ editor.apply();
+​    setDayMode();
 
-​ setDayMode(); // 设置为白天模式
+  } else {
 
-} else {
+​    editor.putBoolean("NightMode", true);
 
-​ editor.putBoolean("NightMode", true);
+​    setNightMode();
 
-​ editor.apply();
+  }
 
-​ setNightMode(); // 设置为夜间模式
-
-}
+  editor.apply();
 
 }
 
-// 设置为白天模式
+ 
 
 private void setDayMode() {
 
-// 设置背景为白色
-
-findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
-
-// 遍历所有列表项，设置文字颜色为黑色
-
-ListView listView = getListView();
-
-for (int i = 0; i < listView.getChildCount(); i++) {
-
-​ View listItem = listView.getChildAt(i);
-
-​ TextView titleTextView = (TextView) listItem.findViewById(android.R.id.text1);
-
-​ TextView timeTextView = (TextView) listItem.findViewById(R.id.time);
-
-​ titleTextView.setTextColor(Color.BLACK); // 设置标题文字颜色
-
-​ timeTextView.setTextColor(Color.GRAY); // 设置时间文字颜色
+  findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
 
 }
 
-}
-
-// 设置为夜间模式
+ 
 
 private void setNightMode() {
 
-// 设置背景为黑色
-
-findViewById(android.R.id.content).setBackgroundColor(Color.BLACK);
-
-// 遍历所有列表项，设置文字颜色为白色
-
-ListView listView = getListView();
-
-for (int i = 0; i < listView.getChildCount(); i++) {
-
-​ View listItem = listView.getChildAt(i);
-
-​ TextView titleTextView = (TextView) listItem.findViewById(android.R.id.text1);
-
-​ TextView timeTextView = (TextView) listItem.findViewById(R.id.time);
-
-​ titleTextView.setTextColor(Color.WHITE); // 设置标题文字颜色
-
-​ timeTextView.setTextColor(Color.LTGRAY); // 设置时间文字颜色
+  findViewById(android.R.id.content).setBackgroundColor(Color.BLACK);
 
 }
 
-}
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E5%A4%9C.png)
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%98%BC.png)
+**实现图**
 
-
-\4. 笔记反向排序功能
-
-功能描述：
-
-提供一个功能按钮，让用户可以对笔记进行反向排序，按照修改时间降序或升序排列笔记。
-
-实现方法：
-
-使用 ContentResolver 根据修改时间进行排序，并更新 ListView。
-
-代码实现：
-
-切换排序顺序：
+1. 右下角悬浮按钮设计效果图。
+2. 昼夜模式切换前后界面对比图。
 
 
 
-private boolean isSortedDescending = false; // 标记当前是否为降序排序
+**4. 笔记反向排序功能**
 
-// 切换排序顺序
+**功能**
+
+用户可以通过按钮切换笔记列表的排序顺序，从修改时间的降序切换到升序（或反之）。
+
+**分析**
+
+1. 使用 ContentResolver 按     COLUMN_NAME_MODIFICATION_DATE 字段进行排序。
+2. 每次切换排序后，更新数据源并刷新列表。
+
+**关键代码**
+
+private boolean isSortedDescending = false;
+
+ 
 
 private void toggleSortOrder() {
 
-String sortOrder = isSortedDescending ?
+  String sortOrder = isSortedDescending ?
 
-​ NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " ASC" :
+​      NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " ASC" :
 
-​ NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " DESC";
+​      NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " DESC";
 
-currentCursor = getContentResolver().query(
+  currentCursor = getContentResolver().query(
 
-​ getIntent().getData(),
+​      getIntent().getData(),
 
-​ PROJECTION,
+​      PROJECTION,
 
-​ null, // 不需要过滤条件
+​      null,
 
-​ null,
+​      null,
 
-​ sortOrder // 根据是否反向排序来决定排序顺序
+​      sortOrder
 
-);
+  );
 
-// 更新适配器数据源
+  SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
 
-SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+  adapter.changeCursor(currentCursor);
 
-adapter.changeCursor(currentCursor);
-
-// 切换排序状态
-
-isSortedDescending = !isSortedDescending;
+  isSortedDescending = !isSortedDescending;
 
 }
-![Example Image](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%8E%92%E5%BA%8F.png)
 
+**实现图**
 
-这些功能将使便签应用更加实用和便捷。通过为每条笔记添加时间戳，用户可以了解笔记的最后修改时间；通过搜索功能，用户可以快速找到想要的笔记；昼夜模式切换可以让用户在不同的光线条件下舒适使用应用；反向排序功能则提供了一种便捷的笔记查看方式，让用户可以按照修改时间轻松查看最新笔记。
+- 排序前后界面的时间戳排列效果对比图。
+
+ 
