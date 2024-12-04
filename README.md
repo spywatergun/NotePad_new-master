@@ -316,13 +316,37 @@ private void setNightMode() {
 }
 ```
 
+
+
+
 **实现图**
+
+
+
+
+
 悬浮按钮与改进的菜单栏
+
+
+
+
 ![悬浮按钮](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
 ![菜单栏](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E8%8F%9C%E5%8D%95.png)
+
+
+
+
 昼夜模式切换
+
+
+
+
 ![昼夜](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E5%A4%9C.png)
 ![昼夜](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%98%BC.png)
+
+
+
+
 
 **4. 笔记反向排序功能**
 
@@ -373,7 +397,15 @@ private void toggleSortOrder() {
 }
 ```
 
+
+
+
+
 **实现图**
+
+
+
+
 ![反向排序](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
 ![反向排序](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%8E%92%E5%BA%8F.png)
 
