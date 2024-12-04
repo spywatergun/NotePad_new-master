@@ -41,6 +41,7 @@ values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis
 getContentResolver().insert(NotePad.Notes.CONTENT_URI, values);
 
 **显示时间戳**
+```
 
 String[] dataColumns = {
 
