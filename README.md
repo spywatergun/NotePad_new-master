@@ -1,19 +1,21 @@
 # NotePad  应用功能文档
 
-**功能**
 
-NotePad 是一款简单易用的 Android 便签应用，具备以下主要功能：
+
+NotePad 是一款简单易用的 Android 记事本应用，我为其添加了以下功能：
+**主要功能**
 
 1. 添加时间戳
 
 2. 笔记搜索功能
 
-3. UI 美化
+**附加功能**
 
-4. - 新建笔记按钮改为右下角加号按钮
+1.UI美化
+   - 新建笔记按钮改为右下角加号按钮
    - 昼夜模式切换
 
-5. 笔记反向排序功能
+2. 笔记反向排序功能
 
 **1. 添加时间戳**
 
@@ -84,7 +86,8 @@ setListAdapter(adapter);
 
 **实现图**
 
-- 列表界面显示标题和时间戳字段，方便用户查看修改时间。
+![时间戳](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
+
 
 
 
@@ -167,9 +170,11 @@ private void performSearch() {
 ```
 
 **实现图**
-
-- 搜索弹框及搜索后列表的展示界面。
-
+搜索成功
+![搜索](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A21.png)
+![搜索](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A22.png)
+搜索失败
+![搜索](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%90%9C%E7%B4%A2%E5%A4%B1%E8%B4%A5.png)
 
 
 **3. UI 美化**
@@ -269,11 +274,12 @@ private void setNightMode() {
 ```
 
 **实现图**
-
-1. 右下角悬浮按钮设计效果图。
-2. 昼夜模式切换前后界面对比图。
-
-
+悬浮按钮与改进的菜单栏
+![悬浮按钮](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
+![菜单栏](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E8%8F%9C%E5%8D%95.png)
+昼夜模式切换
+![昼夜](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E5%A4%9C.png)
+![昼夜](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%98%BC.png)
 
 **4. 笔记反向排序功能**
 
@@ -325,7 +331,8 @@ private void toggleSortOrder() {
 ```
 
 **实现图**
+![反向排序](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E4%B8%BB%E9%A1%B5.png)
+![反向排序](https://github.com/spywatergun/NotePad_new-master/blob/master/readme/%E6%8E%92%E5%BA%8F.png)
 
-- 排序前后界面的时间戳排列效果对比图。
 
  
