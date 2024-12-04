@@ -83,7 +83,37 @@ SimpleCursorAdapter adapter = new SimpleCursorAdapter(
 setListAdapter(adapter);
 ```
 
+**将时间戳格式化为日常时间**
 
+```
+
+private String formatTimestamp(long timestamp) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    return sdf.format(new Date(timestamp));
+}
+
+
+SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+    this,
+    R.layout.noteslist_item,
+    currentCursor,
+    dataColumns,
+    viewIDs
+);
+
+
+adapter.setViewBinder((view, cursor, columnIndex) -> {
+    if (columnIndex == cursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE)) {
+        long timestamp = cursor.getLong(columnIndex);
+        String formattedTime = formatTimestamp(timestamp); 
+        ((TextView) view).setText(formattedTime);
+        return true;
+    }
+    return false;
+});
+
+setListAdapter(adapter);
+```
 
 **实现图**
 
